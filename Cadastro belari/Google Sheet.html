@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belari Gelato - Cadastro</title>
+    <link rel="icon" type="image/png" href="mdagua.jpg"/>
+    <style>
+        /* Remova a classe .Como */
+        *{
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            font-family: 'poppins', sans-serif;
+            font-size: 18px;
+        }
+        body{
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('imagem1.png'); /* Adicione o caminho da sua imagem de fundo aqui */
+            background-size: cover; /* Para cobrir toda a área do corpo */
+            background-repeat: no-repeat; /* Evita que a imagem se repita */
+        }
+        .container{
+            width: 500px;
+            padding: 30px;
+            border: 1px solid #eeeeee;
+            border-radius: 10px;
+            background-color: rgba(228, 12, 100, 0.7); /* Você pode ajustar a opacidade do fundo aqui */
+        }
+        h4{
+            margin-bottom: 10px;
+            font-size: 24px;
+            color: white;
+        }
+        input, select { /* Aplicando as mesmas propriedades aos elementos <select> */
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        textarea{
+            width: 439px; /* Define a largura desejada */
+            height: 70px; /* Define a altura desejada */
+        }
+        #submit{
+            border: none;
+            background-color: #86CBC9;
+            color: black;
+            width: 200px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        #submit:hover{
+            background-color: #333333;
+            color: white;
+        }
+        
+        select option[value="Como Soube?"], select option[value="deseja"] {
+            color: #aaa; /* Cor do texto "Como Soube de Nós?" e "Deseja Receber Nossas Promoções?" */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <form method="post" action="https://script.google.com/macros/s/AKfycbzBT6P2mgBclSvPf7j6trfCLtHIYyhGM9-CxYKjhB-ZXPnorWg8hBWzv64xWuKXMNbIIw/exec" name="contact-form">
+            <h4>Contact Us</h4>
+            <input type="hidden" name="ID" id="ID"> <!-- Input oculto para o ID -->
+            <input type="text" name="Nome" placeholder="Nome">
+            <input type="text" name="CPF" placeholder="CPF">
+            <input type="email" name="Email" placeholder="Email">
+            <input type="text" name="Telefone" placeholder="Telefone">
+            <input type="text" name="Cidade" placeholder="Cidade">
+
+            <select id="Como" name="Como">
+                <option value="Como Soube?">Como Soube de Nós?</option>
+                <option value="Loja">Loja</option>
+                <option value="Istagram">Istagram</option>
+                <option value="Indicação">Indicação</option>
+                <option value="Facebook">Facebook</option>
+
+                <!-- Adicione mais opções conforme necessário -->
+            </select><br>
+
+			<select id="deseja" name="deseja" required>
+				<option value="" disabled selected hidden>Deseja Receber Nossas Promoções?</option>
+				<option value="Sim">Sim</option>
+				<option value="Não">Não</option>
+			</select><br>
+
+                <!-- Adicione mais opções conforme necessário -->
+            </select><br>
+
+            <textarea name="Mensagem" rows="7" placeholder="Deixe uma Mensagem"></textarea>
+            <input type="submit" value="Cadastrar" id="submit">
+        </form>
+    </div>
+
+    <script>
+        const form = document.forms['contact-form'];
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzBT6P2mgBclSvPf7j6trfCLtHIYyhGM9-CxYKjhB-ZXPnorWg8hBWzv64xWuKXMNbIIw/exec';
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const ID = generateID(); // Gera o ID único
+            document.getElementById('ID').value = ID; // Define o valor do ID no input oculto
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => alert("Obrigado por se cadastrar, você receberá um email com seu código promocional."))
+            .then(() => { window.location.reload(); })
+            .catch(error => console.error('Error!', error.message));
+        });
+
+        // Função para gerar um ID único
+        function generateID() {
+            const timestamp = new Date().getTime(); // Obtém o timestamp atual
+            const randomNum = Math.floor(Math.random() * 10000); // Gera um número aleatório de 0 a 9999
+            return 'BEL' + timestamp + '-' + randomNum; // Retorna uma combinação do timestamp e do número aleatório
+        }
+    </script>
+</body>
+</html>
