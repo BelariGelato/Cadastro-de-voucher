@@ -65,10 +65,11 @@
 <body>
     <div class="container">
         <form method="post" action="https://script.google.com/macros/s/AKfycbzBT6P2mgBclSvPf7j6trfCLtHIYyhGM9-CxYKjhB-ZXPnorWg8hBWzv64xWuKXMNbIIw/exec" name="contact-form">
-            <h4>Contact Us</h4>
+           <h4>Contact Us</h4>
             <input type="hidden" name="ID" id="ID"> <!-- Input oculto para o ID -->
+            <input type="hidden" name="DataCadastro" id="DataCadastro"> <!-- Input oculto para a data de cadastro -->
             <input type="text" name="Nome" placeholder="Nome">
-            <input type="text" name="CPF" placeholder="CPF">
+             <input type="text" name="CPF" placeholder="CPF">
             <input type="email" name="Email" placeholder="Email">
             <input type="text" name="Telefone" placeholder="Telefone">
             <input type="text" name="Cidade" placeholder="Cidade">
@@ -105,6 +106,7 @@
             e.preventDefault();
             const ID = generateID(); // Gera o ID único
             document.getElementById('ID').value = ID; // Define o valor do ID no input oculto
+            document.getElementById('DataCadastro').value = generateRegistrationDate(); // Define a data de cadastro no input oculto
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
             .then(response => alert("Obrigado por se cadastrar, você receberá um email com seu código promocional."))
             .then(() => { window.location.reload(); })
@@ -116,6 +118,22 @@
             const timestamp = new Date().getTime(); // Obtém o timestamp atual
             const randomNum = Math.floor(Math.random() * 10000); // Gera um número aleatório de 0 a 9999
             return 'BEL' + timestamp + '-' + randomNum; // Retorna uma combinação do timestamp e do número aleatório
+        }
+
+        // Função para gerar a data de cadastro no formato desejado
+        function generateRegistrationDate() {
+            var currentDate = new Date(); // Obtém a data e hora atual
+            var day = String(currentDate.getDate()).padStart(2, '0'); // Dia com zero à esquerda
+            var month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Mês com zero à esquerda
+            var year = currentDate.getFullYear(); // Ano com quatro dígitos
+            var hours = String(currentDate.getHours()).padStart(2, '0'); // Horas com zero à esquerda
+            var minutes = String(currentDate.getMinutes()).padStart(2, '0'); // Minutos com zero à esquerda
+            var seconds = String(currentDate.getSeconds()).padStart(2, '0'); // Segundos com zero à esquerda
+
+            // Formato da data e hora: DD/MM/AAAA HH:MM:SS
+            var registrationDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+
+            return registrationDate; // Retorna a data de cadastro formatada
         }
     </script>
 </body>
