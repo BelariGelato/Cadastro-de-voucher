@@ -24,7 +24,8 @@
             background-repeat: no-repeat; /* Evita que a imagem se repita */
         }
         .container{
-            width: 500px;
+            max-width: 500px;
+            width: 100%;
             padding: 30px;
             border: 1px solid #eeeeee;
             border-radius: 10px;
@@ -35,20 +36,20 @@
             font-size: 24px;
             color: white;
         }
-        input, select { /* Aplicando as mesmas propriedades aos elementos <select> */
+        input, select, textarea {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
         }
         textarea{
-            width: 439px; /* Define a largura desejada */
             height: 70px; /* Define a altura desejada */
+            resize: vertical; /* Permite a redimensionamento vertical */
         }
         #submit{
             border: none;
             background-color: #86CBC9;
             color: black;
-            width: 200px;
+            width: 100%;
             margin-top: 10px;
             border-radius: 5px;
         }
@@ -60,6 +61,19 @@
         select option[value="Como Soube?"], select option[value="deseja"] {
             color: #aaa; /* Cor do texto "Como Soube de Nós?" e "Deseja Receber Nossas Promoções?" */
         }
+
+        /* Media queries para tornar o formulário responsivo */
+        @media only screen and (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+        }
+
+        @media only screen and (max-width: 400px) {
+            input, select, textarea {
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -68,6 +82,7 @@
            <h4>Contact Us</h4>
             <input type="hidden" name="ID" id="ID"> <!-- Input oculto para o ID -->
             <input type="hidden" name="DataCadastro" id="DataCadastro"> <!-- Input oculto para a data de cadastro -->
+            <input type="hidden" name="Resgatado" value="Sem Resgate"> <!-- Campo Resgatado -->
             <input type="text" name="Nome" placeholder="Nome">
              <input type="text" name="CPF" placeholder="CPF">
             <input type="email" name="Email" placeholder="Email">
@@ -84,13 +99,10 @@
                 <!-- Adicione mais opções conforme necessário -->
             </select><br>
 
-			<select id="deseja" name="deseja" required>
-				<option value="" disabled selected hidden>Deseja Receber Nossas Promoções?</option>
-				<option value="Sim">Sim</option>
-				<option value="Não">Não</option>
-			</select><br>
-
-                <!-- Adicione mais opções conforme necessário -->
+            <select id="deseja" name="deseja" required>
+                <option value="" disabled selected hidden>Deseja Receber Nossas Promoções?</option>
+                <option value="Sim">Sim</option>
+                <option value="Não">Não</option>
             </select><br>
 
             <textarea name="Mensagem" rows="7" placeholder="Deixe uma Mensagem"></textarea>
