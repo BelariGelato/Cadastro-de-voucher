@@ -84,18 +84,18 @@
             <input type="hidden" name="DataCadastro" id="DataCadastro"> <!-- Input oculto para a data de cadastro -->
             <input type="hidden" name="Resgatado" value="Sem Resgate"> <!-- Campo Resgatado -->
             <input type="text" name="Nome" placeholder="Nome">
-             <input type="text" name="CPF" placeholder="CPF">
+            <input type="text" name="CPF" placeholder="CPF">
+            <label for="DataNascimento" style="color: white;">Data de Nascimento:</label>
+            <input type="date" id="DataNascimento" name="DataNascimento" required>
             <input type="email" name="Email" placeholder="Email">
             <input type="text" name="Telefone" placeholder="Telefone">
             <input type="text" name="Cidade" placeholder="Cidade">
-
             <select id="Como" name="Como">
                 <option value="Como Soube?">Como Soube de Nós?</option>
                 <option value="Loja">Loja</option>
                 <option value="Istagram">Istagram</option>
                 <option value="Indicação">Indicação</option>
                 <option value="Facebook">Facebook</option>
-
                 <!-- Adicione mais opções conforme necessário -->
             </select><br>
 
@@ -104,7 +104,7 @@
                 <option value="Sim">Sim</option>
                 <option value="Não">Não</option>
             </select><br>
-
+            
             <textarea name="Mensagem" rows="7" placeholder="Deixe uma Mensagem"></textarea>
             <input type="submit" value="Cadastrar" id="submit">
         </form>
@@ -150,3 +150,4 @@
     </script>
 </body>
 </html>
+
