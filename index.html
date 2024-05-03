@@ -74,9 +74,56 @@
                 font-size: 16px;
             }
         }
+
+        /* Estilos para o modal */
+        .modal {
+            display: none; /* Inicialmente escondido */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5); /* fundo semi-transparente */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 15px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+        <!-- Modal -->
+        <div id="myModal" class="modal">
+            <!-- Conteúdo do modal -->
+            <div class="modal-content">
+                <h2>Termos de Uso</h2>
+                <p>Seus termos de uso aqui...</p>
+                <button name="termo" id="aceitar" value="Aceito">Aceitar</button>
+            </div>
+        </div>
+    
     <div class="container">
         <form method="post" action="https://script.google.com/macros/s/AKfycbw5E4EnmJmW9oUFDiGdj7K_kQaMcRdFe3I6qUzKwdC_3NzZrLb4MA8dI_bGYXOfi6xxdA/exec" name="contact-form">
            <h4>Cadastro de Clientes</h4>
@@ -106,6 +153,7 @@
             </select><br>
             
             <textarea name="Mensagem" rows="7" placeholder="Deixe uma Mensagem"></textarea>
+            <input type="hidden" name="Aceite" id="Aceite" value="Não">
             <input type="submit" value="Cadastrar" id="submit">
         </form>
     </div>
@@ -147,7 +195,26 @@
 
             return registrationDate; // Retorna a data de cadastro formatada
         }
+
+        // Obtém o modal
+        var modal = document.getElementById("myModal");
+
+        // Obtém o botão de fechar
+        var closeBtn = document.getElementsByClassName("close")[0];
+
+        // Obtém o botão de aceitar
+        var acceptBtn = document.getElementById("aceitar");
+
+        // Quando a página é carregada, exibe o modal
+        window.onload = function() {
+            modal.style.display = "block";
+        }
+
+        // Quando o usuário clica no botão de aceitar, fecha o modal e atualiza o valor do aceite
+        acceptBtn.onclick = function() {
+            modal.style.display = "none";
+            document.getElementById('Aceite').value = "Sim";
+        }
     </script>
 </body>
 </html>
-
