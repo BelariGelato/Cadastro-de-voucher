@@ -6,7 +6,6 @@
     <title>Belari Gelato - Cadastro</title>
     <link rel="icon" type="image/png" href="https://github.com/rodrigos-aquino/Imagens_Teste/blob/main/mdagua.jpg?raw=true"/>
     <style>
-        /* Remova a classe .Como */
         *{
             box-sizing: border-box;
             padding: 0;
@@ -19,9 +18,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-image: url('https://raw.githubusercontent.com/rodrigos-aquino/Imagens_Teste/main/FundoGelato.jpg'); /* Adicione o caminho da sua imagem de fundo aqui */
-            background-size: cover; /* Para cobrir toda a área do corpo */
-            background-repeat: no-repeat; /* Evita que a imagem se repita */
+            background-image: url('https://raw.githubusercontent.com/rodrigos-aquino/Imagens_Teste/main/FundoGelato.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
         }
         .container{
             max-width: 500px;
@@ -29,7 +28,7 @@
             padding: 30px;
             border: 1px solid #eeeeee;
             border-radius: 10px;
-            background-color: rgba(228, 12, 100, 0.7); /* Você pode ajustar a opacidade do fundo aqui */
+            background-color: rgba(228, 12, 100, 0.7);
         }
         h4{
             margin-bottom: 10px;
@@ -42,8 +41,8 @@
             margin-bottom: 10px;
         }
         textarea{
-            height: 70px; /* Define a altura desejada */
-            resize: vertical; /* Permite a redimensionamento vertical */
+            height: 70px;
+            resize: vertical;
         }
         #submit{
             border: none;
@@ -52,6 +51,7 @@
             width: 100%;
             margin-top: 10px;
             border-radius: 5px;
+            cursor: pointer;
         }
         #submit:hover{
             background-color: #333333;
@@ -59,25 +59,11 @@
         }
         
         select option[value="Como Soube?"], select option[value="deseja"] {
-            color: #aaa; /* Cor do texto "Como Soube de Nós?" e "Deseja Receber Nossas Promoções?" */
+            color: #aaa;
         }
 
-        /* Media queries para tornar o formulário responsivo */
-        @media only screen and (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-        }
-
-        @media only screen and (max-width: 400px) {
-            input, select, textarea {
-                font-size: 16px;
-            }
-        }
-
-        /* Estilos para o modal */
         .modal {
-            display: none; /* Inicialmente escondido */
+            display: none;
             position: fixed;
             z-index: 1;
             left: 0;
@@ -85,7 +71,7 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgba(0,0,0,0.5); /* fundo semi-transparente */
+            background-color: rgba(0,0,0,0.5);
         }
 
         .modal-content {
@@ -98,123 +84,154 @@
             border-radius: 15px;
         }
 
+        .modal-content2 {
+            background-color: #fefefe;
+            background-image: url('https://github.com/rodrigos-aquino/Imagens_Teste/blob/main/Design_Email.png?raw=true');
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 150%;
+            max-width: 800px;
+            height: 120%;
+            max-height: 600px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
         .close {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
+            cursor: pointer;
         }
 
         .close:hover,
         .close:focus {
             color: black;
             text-decoration: none;
-            cursor: pointer;
         }
     </style>
 </head>
 <body>
-<!-- Modal -->
-<div id="myModal" class="modal">
-    <!-- Conteúdo do modal -->
+<!-- Modal 1 -->
+<div id="myModal1" class="modal">
     <div class="modal-content">
         <h2>Termos de Uso</h2>
-        <p>Nós usamos cookies e outras tecnologias semelhantes para melhorar a sua experiência em nossos serviços, personalizar publicidade. Ao utilizar nossos serviços, você está ciente dessa funcionalidade. Conheça nosso <a href="https://belarigelato.github.io/Politica-de-Privacidade/" target="_blank">Portal da Privacidade</a> e veja o nosso novo Aviso.
-        </p>
-        <button name="termo" id="aceitar" value="Aceito">Aceitar</button>
+        <p>Nós usamos cookies e outras tecnologias semelhantes para melhorar a sua experiência em nossos serviços, personalizar publicidade. Ao utilizar nossos serviços, você está ciente dessa funcionalidade. Conheça nosso <a href="politica_de_privacidade.html">Portal da Privacidade</a> e veja o nosso novo Aviso.</p>
+        <button id="aceitar">Aceitar</button>
     </div>
 </div>
-    <div class="container">
-        <form method="post" action="https://script.google.com/macros/s/AKfycbw5E4EnmJmW9oUFDiGdj7K_kQaMcRdFe3I6qUzKwdC_3NzZrLb4MA8dI_bGYXOfi6xxdA/exec" name="contact-form">
-           <h4>Cadastro de Clientes</h4>
-            <input type="hidden" name="ID" id="ID"> <!-- Input oculto para o ID -->
-            <input type="hidden" name="DataCadastro" id="DataCadastro"> <!-- Input oculto para a data de cadastro -->
-            <input type="hidden" name="Resgatado" value="Sem Resgate"> <!-- Campo Resgatado -->
-            <input type="text" name="Nome" placeholder="Nome">
-            <input type="text" name="CPF" placeholder="CPF">
-            <label for="DataNascimento" style="color: white;">Data de Nascimento:</label>
-            <input type="date" id="DataNascimento" name="DataNascimento" required>
-            <input type="email" name="Email" placeholder="Email">
-            <input type="text" name="Telefone" placeholder="Telefone">
-            <input type="text" name="Cidade" placeholder="Cidade">
-            <select id="Como" name="Como">
-                <option value="Como Soube?">Como Soube de Nós?</option>
-                <option value="Loja">Loja</option>
-                <option value="Istagram">Istagram</option>
-                <option value="Indicação">Indicação</option>
-                <option value="Facebook">Facebook</option>
-                <!-- Adicione mais opções conforme necessário -->
-            </select><br>
 
-            <select id="deseja" name="deseja" required>
-                <option value="" disabled selected hidden>Deseja Receber Nossas Promoções?</option>
-                <option value="Sim">Sim</option>
-                <option value="Não">Não</option>
-            </select><br>
-            
-            <textarea name="Mensagem" rows="7" placeholder="Deixe uma Mensagem"></textarea>
-            <input type="hidden" name="Aceite" id="Aceite" value="Não">
-            <input type="submit" value="Cadastrar" id="submit">
-        </form>
+<!-- Modal 2 -->
+<div id="myModal2" class="modal">
+    <div class="modal-content2">
+        <h2>Obrigado, <span id="nomeCliente"></span>!</h2>
+        <p>Apresente o Voucher abaixo no caixa para receber 10% de desconto em sua compra.</p>
+        <div style="color: #e40c64; font-size: 25px; font-weight: bold; margin-top: 20px;" id="voucher"></div>
     </div>
+</div>
 
-    <script>
-        const form = document.forms['contact-form'];
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbw5E4EnmJmW9oUFDiGdj7K_kQaMcRdFe3I6qUzKwdC_3NzZrLb4MA8dI_bGYXOfi6xxdA/exec';
+<div class="container">
+    <form id="contact-form" method="post" action="https://script.google.com/macros/s/AKfycbw5E4EnmJmW9oUFDiGdj7K_kQaMcRdFe3I6qUzKwdC_3NzZrLb4MA8dI_bGYXOfi6xxdA/exec">
+       <h4>Cadastro de Clientes</h4>
+        <input type="hidden" name="ID" id="ID">
+        <input type="hidden" name="DataCadastro" id="DataCadastro">
+        <input type="hidden" name="Resgatado" value="Sem Resgate">
+        <input type="text" name="Nome" id="Nome" placeholder="Nome">
+        <input type="text" name="CPF" placeholder="CPF">
+        <label for="DataNascimento" style="color: white;">Data de Nascimento:</label>
+        <input type="date" id="DataNascimento" name="DataNascimento" required>
+        <input type="email" name="Email" placeholder="Email">
+        <input type="text" name="Telefone" placeholder="Telefone">
+        <input type="text" name="Cidade" placeholder="Cidade">
+        <select id="Como" name="Como">
+            <option value="Como Soube?">Como Soube de Nós?</option>
+            <option value="Loja">Loja</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Indicação">Indicação</option>
+            <option value="Facebook">Facebook</option>
+        </select><br>
 
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            const ID = generateID(); // Gera o ID único
-            document.getElementById('ID').value = ID; // Define o valor do ID no input oculto
-            document.getElementById('DataCadastro').value = generateRegistrationDate(); // Define a data de cadastro no input oculto
-            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-            .then(response => alert("Obrigado por se cadastrar, você receberá um email com seu código promocional."))
-            .then(() => { window.location.reload(); })
-            .catch(error => console.error('Error!', error.message));
-        });
+        <select id="deseja" name="deseja" required>
+            <option value="" disabled selected hidden>Deseja Receber Nossas Promoções?</option>
+            <option value="Sim">Sim</option>
+            <option value="Não">Não</option>
+        </select><br>
+        
+        <textarea name="Mensagem" rows="7" placeholder="Deixe uma Mensagem"></textarea>
+        <input type="hidden" name="Aceite" id="Aceite" value="Não">
+        <input type="submit" value="Cadastrar" id="submit">
+    </form>
+</div>
 
-        // Função para gerar um ID único
-        function generateID() {
-            const timestamp = new Date().getTime(); // Obtém o timestamp atual
-            const randomNum = Math.floor(Math.random() * 10000); // Gera um número aleatório de 0 a 9999
-            return 'BEL' + timestamp + '-' + randomNum; // Retorna uma combinação do timestamp e do número aleatório
-        }
+<script>
+    const form = document.getElementById('contact-form');
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbw5E4EnmJmW9oUFDiGdj7K_kQaMcRdFe3I6qUzKwdC_3NzZrLb4MA8dI_bGYXOfi6xxdA/exec';
 
-        // Função para gerar a data de cadastro no formato desejado
-        function generateRegistrationDate() {
-            var currentDate = new Date(); // Obtém a data e hora atual
-            var day = String(currentDate.getDate()).padStart(2, '0'); // Dia com zero à esquerda
-            var month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Mês com zero à esquerda
-            var year = currentDate.getFullYear(); // Ano com quatro dígitos
-            var hours = String(currentDate.getHours()).padStart(2, '0'); // Horas com zero à esquerda
-            var minutes = String(currentDate.getMinutes()).padStart(2, '0'); // Minutos com zero à esquerda
-            var seconds = String(currentDate.getSeconds()).padStart(2, '0'); // Segundos com zero à esquerda
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        const ID = generateID();
+        document.getElementById('ID').value = ID;
+        document.getElementById('DataCadastro').value = generateRegistrationDate();
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+        .then(response => {
+            if (response.ok) {
+                const nome = document.getElementById('Nome').value;
+                const voucher = 'BEL' + new Date().getTime(); // Gerar voucher
+                showConfirmationModal(nome, voucher);
+                form.reset();
+            } else {
+                throw new Error('Erro ao enviar o formulário.');
+            }
+        })
+        .catch(error => alert(error.message));
+    });
 
-            // Formato da data e hora: DD/MM/AAAA HH:MM:SS
-            var registrationDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+    function generateID() {
+        const timestamp = new Date().getTime();
+        const randomNum = Math.floor(Math.random() * 10000);
+        return 'BEL' + timestamp + '-' + randomNum;
+    }
 
-            return registrationDate; // Retorna a data de cadastro formatada
-        }
+    function generateRegistrationDate() {
+        var currentDate = new Date();
+        var day = String(currentDate.getDate()).padStart(2, '0');
+        var month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        var year = currentDate.getFullYear();
+        var hours = String(currentDate.getHours()).padStart(2, '0');
+        var minutes = String(currentDate.getMinutes()).padStart(2, '0');
+        var seconds = String(currentDate.getSeconds()).padStart(2, '0');
 
-        // Obtém o modal
-        var modal = document.getElementById("myModal");
+        var registrationDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 
-        // Obtém o botão de fechar
-        var closeBtn = document.getElementsByClassName("close")[0];
+        return registrationDate;
+    }
 
-        // Obtém o botão de aceitar
-        var acceptBtn = document.getElementById("aceitar");
+    var modal1 = document.getElementById("myModal1");
+    var modal2 = document.getElementById("myModal2");
+    var acceptBtn = document.getElementById("aceitar");
 
-        // Quando a página é carregada, exibe o modal
-        window.onload = function() {
-            modal.style.display = "block";
-        }
+    window.onload = function() {
+        modal1.style.display = "block";
+    }
 
-        // Quando o usuário clica no botão de aceitar, fecha o modal e atualiza o valor do aceite
-        acceptBtn.onclick = function() {
-            modal.style.display = "none";
-            document.getElementById('Aceite').value = "Sim";
-        }
-    </script>
+    acceptBtn.onclick = function() {
+        modal1.style.display = "none";
+        document.getElementById('Aceite').value = "Sim";
+    }
+
+    function showConfirmationModal(nome, voucher) {
+        modal2.style.display = "block";
+        document.getElementById('nomeCliente').textContent = nome;
+        document.getElementById('voucher').textContent = voucher;
+    }
+</script>
 </body>
 </html>
