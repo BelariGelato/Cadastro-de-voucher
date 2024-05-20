@@ -157,7 +157,7 @@
             <option value="Instagram">Instagram</option>
             <option value="Indicação">Indicação</option>
             <option value="Facebook">Facebook</option>
-            <option value="Facebook">Evento Teatro Municipal de Osasco</option>
+            <option value="Evento Teatro Municipal de Osasco">Evento Teatro Municipal de Osasco</option>
         </select><br>
 
         <select id="deseja" name="deseja" required>
@@ -174,10 +174,12 @@
 
 <script>
     const form = document.getElementById('contact-form');
+    const submitButton = document.getElementById('submit');
     const scriptURL = 'https://script.google.com/macros/s/AKfycbw5E4EnmJmW9oUFDiGdj7K_kQaMcRdFe3I6qUzKwdC_3NzZrLb4MA8dI_bGYXOfi6xxdA/exec';
 
     form.addEventListener('submit', e => {
         e.preventDefault();
+        disableSubmitButton();
         const ID = generateID();
         document.getElementById('ID').value = ID;
         document.getElementById('DataCadastro').value = generateRegistrationDate();
@@ -192,8 +194,19 @@
                 throw new Error('Erro ao enviar o formulário.');
             }
         })
-        .catch(error => alert(error.message));
+        .catch(error => alert(error.message))
+        .finally(() => enableSubmitButton());
     });
+
+    function disableSubmitButton() {
+        submitButton.disabled = true;
+        submitButton.value = 'Enviando...';
+    }
+
+    function enableSubmitButton() {
+        submitButton.disabled = false;
+        submitButton.value = 'Cadastrar';
+    }
 
     function generateID() {
         const timestamp = new Date().getTime();
