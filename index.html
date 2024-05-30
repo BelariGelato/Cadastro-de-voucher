@@ -6,14 +6,14 @@
     <title>Belari Gelato - Cadastro</title>
     <link rel="icon" type="image/png" href="https://github.com/rodrigos-aquino/Imagens_Teste/blob/main/mdagua.jpg?raw=true"/>
     <style>
-        *{
+        * {
             box-sizing: border-box;
             padding: 0;
             margin: 0;
             font-family: 'poppins', sans-serif;
             font-size: 18px;
         }
-        body{
+        body {
             height: 100vh;
             display: flex;
             align-items: center;
@@ -22,7 +22,7 @@
             background-size: cover;
             background-repeat: no-repeat;
         }
-        .container{
+        .container {
             max-width: 500px;
             width: 100%;
             padding: 30px;
@@ -30,7 +30,7 @@
             border-radius: 10px;
             background-color: rgba(228, 12, 100, 0.7);
         }
-        h4{
+        h4 {
             margin-bottom: 10px;
             font-size: 24px;
             color: white;
@@ -40,11 +40,11 @@
             padding: 10px;
             margin-bottom: 10px;
         }
-        textarea{
+        textarea {
             height: 70px;
             resize: vertical;
         }
-        #submit{
+        #submit {
             border: none;
             background-color: #86CBC9;
             color: black;
@@ -53,15 +53,13 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        #submit:hover{
+        #submit:hover {
             background-color: #333333;
             color: white;
         }
-        
         select option[value="Como Soube?"], select option[value="deseja"] {
             color: #aaa;
         }
-
         .modal {
             display: none;
             position: fixed;
@@ -73,7 +71,6 @@
             overflow: auto;
             background-color: rgba(0,0,0,0.5);
         }
-
         .modal-content {
             background-color: #fefefe;
             margin: 15% auto;
@@ -83,7 +80,6 @@
             max-width: 600px;
             border-radius: 15px;
         }
-
         .modal-content2 {
             background-color: #fefefe;
             background-image: url('https://github.com/rodrigos-aquino/Imagens_Teste/blob/main/Design_Email.png?raw=true');
@@ -103,7 +99,6 @@
             justify-content: center;
             text-align: center;
         }
-
         .close {
             color: #aaa;
             float: right;
@@ -111,7 +106,6 @@
             font-weight: bold;
             cursor: pointer;
         }
-
         .close:hover,
         .close:focus {
             color: black;
@@ -139,16 +133,17 @@
 </div>
 
 <div class="container">
-    <form id="contact-form" method="post" action="https://script.google.com/macros/s/AKfycbw5E4EnmJmW9oUFDiGdj7K_kQaMcRdFe3I6qUzKwdC_3NzZrLb4MA8dI_bGYXOfi6xxdA/exec">
-       <h4>Cadastro de Clientes</h4>
+    <form id="contact-form">
+        <h4>Cadastro de Clientes</h4>
         <input type="hidden" name="ID" id="ID">
         <input type="hidden" name="DataCadastro" id="DataCadastro">
         <input type="hidden" name="Resgatado" value="Sem Resgate">
-        <input type="text" name="Nome" id="Nome" placeholder="Nome">
-        <input type="text" name="CPF" placeholder="CPF">
+        <input type="hidden" name="Voucher" id="Voucher">
+        <input type="text" name="Nome" id="Nome" placeholder="Nome" required>
+        <input type="text" name="CPF" id="CPF" placeholder="CPF" required>
         <label for="DataNascimento" style="color: white;">Data de Nascimento:</label>
         <input type="date" id="DataNascimento" name="DataNascimento" required>
-        <input type="email" name="Email" placeholder="Email">
+        <input type="email" name="Email" id="Email" placeholder="Email" required>
         <input type="text" name="Telefone" placeholder="Telefone">
         <input type="text" name="Cidade" placeholder="Cidade">
         <select id="Como" name="Como">
@@ -159,13 +154,11 @@
             <option value="Facebook">Facebook</option>
             <option value="Evento Teatro Municipal de Osasco">Evento Teatro Municipal de Osasco</option>
         </select><br>
-
         <select id="deseja" name="deseja" required>
             <option value="" disabled selected hidden>Deseja Receber Nossas Promoções?</option>
             <option value="Sim">Sim</option>
             <option value="Não">Não</option>
         </select><br>
-        
         <textarea name="Mensagem" rows="7" placeholder="Deixe uma Mensagem"></textarea>
         <input type="hidden" name="Aceite" id="Aceite" value="Não">
         <input type="submit" value="Cadastrar" id="submit">
@@ -176,27 +169,54 @@
     const form = document.getElementById('contact-form');
     const submitButton = document.getElementById('submit');
     const scriptURL = 'https://script.google.com/macros/s/AKfycbw5E4EnmJmW9oUFDiGdj7K_kQaMcRdFe3I6qUzKwdC_3NzZrLb4MA8dI_bGYXOfi6xxdA/exec';
+    const checkUserURL = 'YOUR_DEPLOYED_WEB_APP_URL'; // URL da API para verificar usuários existentes
 
-    form.addEventListener('submit', e => {
+    form.addEventListener('submit', async e => {
         e.preventDefault();
         disableSubmitButton();
-        const ID = generateID();
-        document.getElementById('ID').value = ID;
-        document.getElementById('DataCadastro').value = generateRegistrationDate();
-        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => {
-            if (response.ok) {
-                const nome = document.getElementById('Nome').value;
-                const voucher = 'BEL' + new Date().getTime(); // Gerar voucher
-                showConfirmationModal(nome, voucher);
-                form.reset();
-            } else {
-                throw new Error('Erro ao enviar o formulário.');
-            }
-        })
-        .catch(error => alert(error.message))
-        .finally(() => enableSubmitButton());
+        
+        const cpf = document.getElementById('CPF').value;
+        const email = document.getElementById('Email').value;
+        const userExists = await checkUserExists(cpf, email);
+        
+        if (userExists) {
+            alert('Usuário já cadastrado com este CPF ou Email.');
+            enableSubmitButton();
+        } else {
+            const ID = generateID();
+            const voucher = ID; // Usar o mesmo ID como voucher
+
+            document.getElementById('ID').value = ID;
+            document.getElementById('DataCadastro').value = generateRegistrationDate();
+            document.getElementById('Voucher').value = voucher; // Armazenar voucher no formulário
+
+            const formData = new FormData(form);
+
+            fetch(scriptURL, { method: 'POST', body: formData })
+            .then(response => {
+                if (response.ok) {
+                    const nome = document.getElementById('Nome').value;
+                    showConfirmationModal(nome, voucher);
+                    form.reset();
+                } else {
+                    throw new Error('Erro ao enviar o formulário.');
+                }
+            })
+            .catch(error => alert(error.message))
+            .finally(() => enableSubmitButton());
+        }
     });
+
+    async function checkUserExists(cpf, email) {
+        try {
+            const response = await fetch(`${checkUserURL}?cpf=${cpf}&email=${email}`);
+            const data = await response.json();
+            return data.exists;
+        } catch (error) {
+            console.error('Erro ao verificar usuário existente:', error);
+            return false;
+        }
+    }
 
     function disableSubmitButton() {
         submitButton.disabled = true;
@@ -215,22 +235,19 @@
     }
 
     function generateRegistrationDate() {
-        var currentDate = new Date();
-        var day = String(currentDate.getDate()).padStart(2, '0');
-        var month = String(currentDate.getMonth() + 1).padStart(2, '0');
-        var year = currentDate.getFullYear();
-        var hours = String(currentDate.getHours()).padStart(2, '0');
-        var minutes = String(currentDate.getMinutes()).padStart(2, '0');
-        var seconds = String(currentDate.getSeconds()).padStart(2, '0');
-
-        var registrationDate = `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-
-        return registrationDate;
+        const currentDate = new Date();
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const year = currentDate.getFullYear();
+        const hours = String(currentDate.getHours()).padStart(2, '0');
+        const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+        const seconds = String(currentDate.getSeconds()).padStart(2, '0');
+        return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
     }
 
-    var modal1 = document.getElementById("myModal1");
-    var modal2 = document.getElementById("myModal2");
-    var acceptBtn = document.getElementById("aceitar");
+    const modal1 = document.getElementById("myModal1");
+    const modal2 = document.getElementById("myModal2");
+    const acceptBtn = document.getElementById("aceitar");
 
     window.onload = function() {
         modal1.style.display = "block";
