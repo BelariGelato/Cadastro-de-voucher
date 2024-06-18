@@ -193,7 +193,7 @@
 
         // CPF Masking
         cpf.addEventListener('input', function() {
-        let value = cpfInput.value.replace(/\D/g, '');
+        let value = cpf.value.replace(/\D/g, '');
         value = value.slice(0, 11); // Limita a 11 caracteres
         value = value.replace(/(\d{3})(\d)/, '$1.$2');
         value = value.replace(/(\d{3})(\d)/, '$1.$2');
@@ -203,7 +203,7 @@
 
     // Date of Birth Masking
     dataNascimento.addEventListener('input', function() {
-        let value = dobInput.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+        let value = dataNascimento.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
         value = value.slice(0, 8); // Limita a 8 caracteres
 
         if (value.length > 4) { // Se houver mais de 4 caracteres, formata como dd/mm/aaaa
@@ -340,12 +340,12 @@
         const deseja = document.getElementById('deseja').value;
         const mensagem = document.querySelector('textarea[name="Mensagem"]').value;
 
-        const isValidCPF = /^\d{11}$/.test(cpf);
+        
         const isValidTelefone = /^\d{10,11}$/.test(telefone);
 
         if (showErrors) {
             document.getElementById('errorNome').style.display = nome.trim() === '' ? 'block' : 'none';
-            document.getElementById('errorCPF').style.display = !isValidCPF ? 'block' : 'none';
+            document.getElementById('errorCPF').style.display = cpf.trim() === '' ? 'block' : 'none';
             document.getElementById('errorDataNascimento').style.display = dataNascimento.trim() === '' ? 'block' : 'none';
             document.getElementById('errorEmail').style.display = email.trim() === '' ? 'block' : 'none';
             document.getElementById('errorTelefone').style.display = !isValidTelefone ? 'block' : 'none';
@@ -357,7 +357,7 @@
 
         if (
             nome.trim() === '' ||
-            !isValidCPF ||
+            cpf.trim() === '' ||
             dataNascimento.trim() === '' ||
             email.trim() === '' ||
             !isValidTelefone ||
