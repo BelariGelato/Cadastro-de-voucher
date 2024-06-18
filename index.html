@@ -53,9 +53,9 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        #submit:hover {
-            background-color: #333333;
-            color: white;
+        #submit:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
         }
         select option[value="Como Soube?"], select option[value="deseja"] {
             color: #aaa;
@@ -111,6 +111,13 @@
             color: black;
             text-decoration: none;
         }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -118,8 +125,9 @@
 <div id="myModal1" class="modal">
     <div class="modal-content">
         <h2>Termos de Uso</h2>
-        <p>Nós usamos cookies e outras tecnologias semelhantes para melhorar a sua experiência em nossos serviços, personalizar publicidade. Ao utilizar nossos serviços, você está ciente dessa funcionalidade. Conheça nosso <a href="https://belarigelato.github.io/Politica-de-Privacidade/">Portal da Privacidade</a> e veja o nosso novo Aviso.</p>
+        <p>Nós usamos cookies e outras tecnologias semelhantes para melhorar a sua experiência em nossos serviços, personalizar publicidade. Ao utilizar nossos serviços, você está ciente dessa funcionalidade. Conheça nosso <a href="policadeprivacidade.html">Portal da Privacidade</a> e veja o nosso novo Aviso.</p>
         <button id="aceitar">Aceitar</button>
+        <a class="edit-link" href="policadeprivacidade.html" target="_blank"></a>
     </div>
 </div>
 
@@ -138,30 +146,40 @@
         <input type="hidden" name="ID" id="ID">
         <input type="hidden" name="DataCadastro" id="DataCadastro">
         <input type="hidden" name="Resgatado" value="Sem Resgate">
+        <input type="hidden" name="Tipo de Voucher" value="Desconto">
         <input type="hidden" name="Voucher" id="Voucher">
         <input type="text" name="Nome" id="Nome" placeholder="Nome" required>
-        <input type="text" name="CPF" id="CPF" placeholder="CPF" required>
+        <span class="error-message" id="errorNome">Campo obrigatório.</span>
+        <input type="text" name="CPF" id="CPF" placeholder="CPF" required pattern="\d{11}" title="Digite um CPF válido com 11 dígitos.">
+        <span class="error-message" id="errorCPF">CPF inválido.</span>
         <label for="DataNascimento" style="color: white;">Data de Nascimento:</label>
-        <input type="date" id="DataNascimento" name="DataNascimento" required>
+        <input type="text" id="DataNascimento" name="DataNascimento" placeholder="dd/mm/aaaa" required>
+        <span class="error-message" id="errorDataNascimento">Campo obrigatório.</span>
         <input type="email" name="Email" id="Email" placeholder="Email" required>
-        <input type="text" name="Telefone" placeholder="Telefone">
-        <input type="text" name="Cidade" placeholder="Cidade">
-        <select id="Como" name="Como">
-            <option value="Como Soube?">Como Soube de Nós?</option>
+        <span class="error-message" id="errorEmail">Email inválido.</span>
+        <input type="text" name="Telefone" id="Telefone" placeholder="Telefone" required pattern="\d{10,11}" title="Digite um número de telefone válido com 10 ou 11 dígitos.">
+        <span class="error-message" id="errorTelefone">Telefone inválido.</span>
+        <input type="text" name="Cidade" id="Cidade" placeholder="Cidade" required>
+        <span class="error-message" id="errorCidade">Campo obrigatório.</span>
+        <select id="Como" name="Como" required>
+            <option value="" disabled selected hidden>Como Soube de Nós?</option>
             <option value="Loja">Loja</option>
             <option value="Instagram">Instagram</option>
             <option value="Indicação">Indicação</option>
             <option value="Facebook">Facebook</option>
             <option value="Evento Teatro Municipal de Osasco">Evento Teatro Municipal de Osasco</option>
-        </select><br>
+        </select>
+        <span class="error-message" id="errorComo">Selecione uma opção.</span>
         <select id="deseja" name="deseja" required>
             <option value="" disabled selected hidden>Deseja Receber Nossas Promoções?</option>
             <option value="Sim">Sim</option>
             <option value="Não">Não</option>
-        </select><br>
+        </select>
+        <span class="error-message" id="errorDeseja">Selecione uma opção.</span>
         <textarea name="Mensagem" rows="7" placeholder="Deixe uma Mensagem"></textarea>
+        <span class="error-message" id="errorMensagem">Campo obrigatório.</span>
         <input type="hidden" name="Aceite" id="Aceite" value="Não">
-        <input type="submit" value="Cadastrar" id="submit">
+        <input type="button" value="Cadastrar" id="submit" disabled>
     </form>
 </div>
 
@@ -170,15 +188,55 @@
     const submitButton = document.getElementById('submit');
     const scriptURL = 'https://script.google.com/macros/s/AKfycbw5E4EnmJmW9oUFDiGdj7K_kQaMcRdFe3I6qUzKwdC_3NzZrLb4MA8dI_bGYXOfi6xxdA/exec';
     const checkUserURL = 'YOUR_DEPLOYED_WEB_APP_URL'; // URL da API para verificar usuários existentes
+    const cpf = document.getElementById('CPF');
+    const dataNascimento = document.getElementById('DataNascimento');
 
-    form.addEventListener('submit', async e => {
-        e.preventDefault();
-        disableSubmitButton();
+        // CPF Masking
+        cpf.addEventListener('input', function() {
+        let value = cpfInput.value.replace(/\D/g, '');
+        value = value.slice(0, 11); // Limita a 11 caracteres
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d)/, '$1.$2');
+        value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        cpf.value = value;
+    });
+
+    // Date of Birth Masking
+    dataNascimento.addEventListener('input', function() {
+        let value = dobInput.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+        value = value.slice(0, 8); // Limita a 8 caracteres
+
+        if (value.length > 4) { // Se houver mais de 4 caracteres, formata como dd/mm/aaaa
+            value = value.replace(/^(\d{2})(\d{2})(\d{4})$/, '$1/$2/$3');
+        } else if (value.length > 2) { // Se houver mais de 2 caracteres, formata como dd/mm
+            value = value.replace(/^(\d{2})(\d{2})$/, '$1/$2');
+        }
         
+        dataNascimento.value = value; // Define o valor formatado no campo de entrada
+    });
+
+    form.addEventListener('input', checkFormValidity);
+    submitButton.addEventListener('click', handleSubmit);
+
+    async function handleSubmit() {
+        if (submitButton.disabled) {
+            validateForm(true);
+            return;
+        }
+
+        disableSubmitButton();
+
         const cpf = document.getElementById('CPF').value;
         const email = document.getElementById('Email').value;
+
+        if (!validateForm()) {
+            alert('Por favor, preencha todos os campos obrigatórios corretamente.');
+            enableSubmitButton();
+            return;
+        }
+
         const userExists = await checkUserExists(cpf, email);
-        
+
         if (userExists) {
             alert('Usuário já cadastrado com este CPF ou Email.');
             enableSubmitButton();
@@ -193,19 +251,19 @@
             const formData = new FormData(form);
 
             fetch(scriptURL, { method: 'POST', body: formData })
-            .then(response => {
-                if (response.ok) {
-                    const nome = document.getElementById('Nome').value;
-                    showConfirmationModal(nome, voucher);
-                    form.reset();
-                } else {
-                    throw new Error('Erro ao enviar o formulário.');
-                }
-            })
-            .catch(error => alert(error.message))
-            .finally(() => enableSubmitButton());
+                .then(response => {
+                    if (response.ok) {
+                        const nome = document.getElementById('Nome').value;
+                        showConfirmationModal(nome, voucher);
+                        form.reset();
+                    } else {
+                        throw new Error('Erro ao enviar o formulário.');
+                    }
+                })
+                .catch(error => alert(error.message))
+                .finally(() => enableSubmitButton());
         }
-    });
+    }
 
     async function checkUserExists(cpf, email) {
         try {
@@ -262,6 +320,55 @@
         modal2.style.display = "block";
         document.getElementById('nomeCliente').textContent = nome;
         document.getElementById('voucher').textContent = voucher;
+    }
+
+    function checkFormValidity() {
+        const isValid = validateForm();
+        submitButton.disabled = !isValid;
+    }
+
+    function validateForm(showErrors = false) {
+        let isValid = true;
+
+        const nome = document.getElementById('Nome').value;
+        const cpf = document.getElementById('CPF').value;
+        const dataNascimento = document.getElementById('DataNascimento').value;
+        const email = document.getElementById('Email').value;
+        const telefone = document.getElementById('Telefone').value;
+        const cidade = document.getElementById('Cidade').value;
+        const como = document.getElementById('Como').value;
+        const deseja = document.getElementById('deseja').value;
+        const mensagem = document.querySelector('textarea[name="Mensagem"]').value;
+
+        const isValidCPF = /^\d{11}$/.test(cpf);
+        const isValidTelefone = /^\d{10,11}$/.test(telefone);
+
+        if (showErrors) {
+            document.getElementById('errorNome').style.display = nome.trim() === '' ? 'block' : 'none';
+            document.getElementById('errorCPF').style.display = !isValidCPF ? 'block' : 'none';
+            document.getElementById('errorDataNascimento').style.display = dataNascimento.trim() === '' ? 'block' : 'none';
+            document.getElementById('errorEmail').style.display = email.trim() === '' ? 'block' : 'none';
+            document.getElementById('errorTelefone').style.display = !isValidTelefone ? 'block' : 'none';
+            document.getElementById('errorCidade').style.display = cidade.trim() === '' ? 'block' : 'none';
+            document.getElementById('errorComo').style.display = como === '' ? 'block' : 'none';
+            document.getElementById('errorDeseja').style.display = deseja === '' ? 'block' : 'none';
+            
+        }
+
+        if (
+            nome.trim() === '' ||
+            !isValidCPF ||
+            dataNascimento.trim() === '' ||
+            email.trim() === '' ||
+            !isValidTelefone ||
+            cidade.trim() === '' ||
+            como === '' || como === 'Como Soube de Nós?' ||
+            deseja === '' 
+        ) {
+            isValid = false;
+        }
+
+        return isValid;
     }
 </script>
 </body>
